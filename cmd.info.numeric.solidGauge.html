@@ -1,0 +1,157 @@
+<div class="cmd cmd-widget #history#" data-type="info" data-subtype="numeric" data-template="default" data-cmd_id="#id#"
+	data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+	<div class="title #hide_name#">
+		<div class="cmdName">#name_display#</div>
+	</div>
+	<div class="content content-sm">
+		<div>
+			<span class="solidGauge"></span>
+		</div>
+	</div>
+	<div class="timeCmd label label-default #history#" data-type="info"></div>
+	<div class="cmdStats #hide_history#">
+		<span title="{{Minimum}}" class="tooltips">#minHistoryValue#</span>|<span title="{{Moyenne}}"
+			class="tooltips">#averageHistoryValue#</span>|<span title="{{Maximum}}"
+			class="tooltips">#maxHistoryValue#</span> <i class="#tendance#"></i>
+	</div>
+	<template>
+		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+	</template>
+	<script>
+		var color1 = ('#color1#' != '#' + 'color1#') ? '#color1#' : 'rgb(0, 255, 0)';
+		var color2 = ('#color2#' != '#' + 'color2#') ? '#color2#' : 'rgb(255, 255, 0)';
+		var color3 = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
+		var tickInterval = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : 25;
+		var min = is_numeric('#min#') ? parseFloat('#min#') : 0;
+		var max = is_numeric('#max#') ? parseFloat('#max#') : 100;
+		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+				cmd.querySelector('.content').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate)
+				if ('#time#' == 'duration' || '#time#' == 'date') {
+					jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#')
+				}
+				cmd.querySelector('solidGauge').highcharts().series[0].points[0].update(_options.value)
+				if (is_numeric(_options.value)) {
+					cmd.querySelector('.solidGauge').empty().highcharts({
+						chart: {
+							style: {
+								fontFamily: 'Roboto'
+							},
+							type: 'solidgauge',
+							plotBackgroundColor: null,
+							plotBackgroundImage: null,
+							backgroundColor: null,
+							plotBorderWidth: 0,
+							plotShadow: false,
+							height: 106,
+							spacingTop: 0,
+							spacingLeft: 0,
+							spacingRight: 0,
+							spacingBottom: 0,
+							borderWidth: 0
+						},
+						title: null,
+						pane: {
+							center: ['50%', '50%'],
+							size: 100,
+							startAngle: 180,
+							endAngle: 540,
+							background: {
+								innerRadius: '70%',
+								outerRadius: '100%',
+								shape: 'arc',
+								borderWidth: 0,
+							}
+						},
+						tooltip: {
+							enabled: false
+						},
+						yAxis: {
+							stops: [
+								[0.3, color1],
+								[0.6, color2],
+								[0.9, color3]
+							],
+							lineWidth: 0,
+							minorTickInterval: null,
+							tickInterval: tickInterval,
+							tickWidth: 4,
+							tickLength: 15,
+							tickPosition: 'inside',
+							labels: {
+								enabled: false
+							},
+							min: min,
+							max: max,
+							zIndex: 6,
+							title: {
+								text: ''
+							}
+						},
+						labels: {
+							enabled: false
+						},
+						plotOptions: {
+							solidgauge: {
+								dataLabels: {
+									y: 9,
+									borderWidth: 0,
+									useHTML: true
+								}
+							}
+						},
+						credits: {
+							enabled: false
+						},
+						exporting: {
+							enabled: false
+						},
+						series: [{
+							name: '',
+							data: [Math.round(parseFloat('#state#') * 10) / 10],
+							radius: '100%',
+							innerRadius: '70%',
+							dataLabels: {
+								y: -22,
+								format: '<span style="color: var(--link-color); font-size: 24px !important;">{y}</span> <span style="color: var(--link-color); font-size: 12px; position: relative; top: -8px;">#unite#</span>'
+							},
+						}]
+					})
+				} else {
+					cmd.querySelector('.value').innerHTML = '<span class="label label-danger">' + _options.value + '</span>'
+				}
+			}
+		})
+		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }])
+	</script>
+	<style>
+		.solidGauge {
+			width: 105px;
+			height: 105px;
+		}
+
+		.solidGauge .highcharts-pane {
+			fill: var(--el-defaultColor);
+		}
+
+		body[data-theme="core2019_Dark"] .solidGauge .highcharts-tick {
+			stroke: rgb(38, 38, 38);
+		}
+
+		body[data-theme="core2019_Light"] .solidGauge .highcharts-tick {
+			stroke: rgb(249, 249, 250);
+		}
+
+		.solidGauge .highcharts-container .highcharts-axis-line {
+			stroke: transparent;
+		}
+
+		.solidGauge .highcharts-yaxis-grid .highcharts-grid-line {
+			stroke: none !important;
+		}
+
+		.solidGauge .highcharts-background {
+			fill: transparent !important;
+		}
+	</style>
+</div>
