@@ -13,7 +13,15 @@
 			class="tooltips">#maxHistoryValue#</span> <i class="#tendance#"></i>
 	</div>
 	<template>
+		<div>backgroundColor : var(--el-defaultColor) ({{Couleur de fond}})</div>
+		<div>color1 : rgb(0, 255, 0) ({{1ère couleur de remplissage}})</div>
+		<div>color2 : rgb(255, 255, 0) ({{2ème couleur de remplissage}})</div>
+		<div>color3 : rgb(255, 0, 0) ({{3ème couleur de remplissage}})</div>
+		<div>tickInterval : 25 ({{Pas des ticks}})</div>
+		<div>min : 0 ({{Valeur minimum}})</div>
+		<div>max : 100 ({{Valeur maximum}})</div>
 		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+		<div>tickColor : rgb(38, 38, 38) ({{3ème couleur de remplissage}})</div>
 	</template>
 	<script>
 		var backgroundColor = ('#backgroundColor#' != '#' + 'backgroundColor#') ? '#backgroundColor#' : 'var(--el-defaultColor)';
@@ -118,9 +126,20 @@
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
 				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate)
+
+				// >= 4.4.0
+				// if ('#_time_widget_#' == '1' || '#time#' == 'duration' || '#time#' == 'date') {
+				// 	jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#')
+				// }
+
+				// < 4.4.0
+				let cmd2 = $('.cmd[data-cmd_id=#id#]')
 				if ('#time#' == 'duration' || '#time#' == 'date') {
-					jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#')
+					jeedom.cmd.displayDuration(_options.valueDate, cmd2.find('.timeCmd'), '#time#')
+				} else {
+					cmd2.find('.timeCmd').remove()
 				}
+				
 				solidGauge#uid#.series[0].points[0].update(_options.display_value)
 			}
 		})
