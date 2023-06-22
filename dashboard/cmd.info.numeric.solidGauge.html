@@ -121,14 +121,14 @@
 				}]
 			})
 		} else {
-			cmd.querySelector('.value').innerHTML = '<span class="label label-danger">' + _options.value + '</span>'
+			cmd.querySelector('#solidGauge#uid#').innerHTML = '<span class="label label-danger">' + _options.value + '</span>'
 		}
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
 				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate)
 
 				// >= 4.4.0
-				// if ('#_time_widget_#' == '1' || '#time#' == 'duration' || '#time#' == 'date') {
+				// if ('#time#' == 'duration' || '#time#' == 'date') {
 				// 	jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#')
 				// }
 
@@ -136,6 +136,13 @@
 				let cmd2 = $('.cmd[data-cmd_id=#id#]')
 				if ('#time#' == 'duration' || '#time#' == 'date') {
 					jeedom.cmd.displayDuration(_options.valueDate, cmd2.find('.timeCmd'), '#time#')
+				} else if ('#time#' == 'GaugeIMG') {
+					let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+					let date = new Date(_options.valueDate.replace(' ', 'T'));
+					let t = _options.valueDate.split(/[- :]/);
+					let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
+					let time = "à " + t[3] + ":" + t[4];
+					cmd2.find('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
 				} else {
 					cmd2.find('.timeCmd').remove()
 				}
@@ -168,6 +175,16 @@
 
 		#solidGauge#uid# .highcharts-background {
 			fill: transparent !important;
+		}
+
+		.GaugeIMG {
+			font-size: 11px;
+			padding: 2px 4px 2px 4px;
+			margin-top: 4px;
+			line-height: 1em !important;
+			display: inline-block !important;
+			box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 1), 0px 1px 2px 0px rgba(172, 172, 172, 0.5) inset;
+			margin-bottom: 5px;
 		}
 	</style>
 </div>
