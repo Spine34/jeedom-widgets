@@ -14,6 +14,9 @@
 		</div>
 	</div>
 	<div class="timeCmd label label-default #history#" data-type="info"></div>
+	<template>
+		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+	</template>
 	<script>
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
