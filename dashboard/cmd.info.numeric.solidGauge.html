@@ -17,10 +17,10 @@
 		<div>color1 : rgb(0, 255, 0) ({{1ère couleur de remplissage}})</div>
 		<div>color2 : rgb(255, 255, 0) ({{2ème couleur de remplissage}})</div>
 		<div>color3 : rgb(255, 0, 0) ({{3ème couleur de remplissage}})</div>
-		<div>tickInterval : 25 ({{Pas des ticks}})</div>
+		<div>tickInterval : (#max# - #min#) / 4 ({{Pas des ticks}})</div>
 		<div>min : 0 ({{Valeur minimum}})</div>
 		<div>max : 100 ({{Valeur maximum}})</div>
-		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
 		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
@@ -28,7 +28,7 @@
 		var color1 = ('#color1#' != '#' + 'color1#') ? '#color1#' : 'rgb(0, 255, 0)';
 		var color2 = ('#color2#' != '#' + 'color2#') ? '#color2#' : 'rgb(255, 255, 0)';
 		var color3 = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
-		var tickInterval = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : 25;
+		var tickInterval = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (#max# - #min#) / 4;
 		var min = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		if (is_numeric('#state#')) {
@@ -177,7 +177,7 @@
 			fill: transparent !important;
 		}
 
-		.GaugeIMG {
+		.timeCmd.GaugeIMG {
 			font-size: 11px;
 			padding: 2px 4px 2px 4px;
 			margin-top: 4px;
