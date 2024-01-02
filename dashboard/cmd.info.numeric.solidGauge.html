@@ -129,7 +129,7 @@
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
 				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
 
-				if (jeeFrontEnd.jeedomVersion.substr(2, 1) > 4) {
+				if (jeeFrontEnd.jeedomVersion.substr(2, 1) >= 4) {
 					if ('#time#' == 'duration' || '#time#' == 'date') {
 						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
 					} else if ('#time#' == 'GaugeIMG') {
