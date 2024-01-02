@@ -17,6 +17,8 @@
 		<div>color1 : rgb(0, 255, 0) ({{1ère couleur de remplissage}})</div>
 		<div>color2 : rgb(255, 255, 0) ({{2ème couleur de remplissage}})</div>
 		<div>color3 : rgb(255, 0, 0) ({{3ème couleur de remplissage}})</div>
+		<div>startAngle : 180 ({{Angle de départ}})</div>
+		<div>endAngle : 540 ({{Angle de fin}})</div>
 		<div>min : 0 ({{Valeur minimum}})</div>
 		<div>max : 100 ({{Valeur maximum}})</div>
 		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
@@ -30,6 +32,8 @@
 		var color1 = ('#color1#' != '#' + 'color1#') ? '#color1#' : 'rgb(0, 255, 0)';
 		var color2 = ('#color2#' != '#' + 'color2#') ? '#color2#' : 'rgb(255, 255, 0)';
 		var color3 = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
+		var startAngle = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : 180;
+		var endAngle = is_numeric('#endAngle#') ? parseFloat('#endAngle#') : 540;
 		var min = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max - min) / 4;
@@ -56,8 +60,8 @@
 				pane: {
 					center: ['50%', '50%'],
 					size: 100,
-					startAngle: 180,
-					endAngle: 540,
+					startAngle: startAngle,
+					endAngle: endAngle,
 					background: {
 						innerRadius: '70%',
 						outerRadius: '100%',
