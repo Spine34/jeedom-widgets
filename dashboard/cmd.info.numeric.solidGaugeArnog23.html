@@ -1,4 +1,4 @@
-<div class="cmd cmd-widget #history#" data-type="info" data-subtype="string" data-cmd_id="#id#" data-cmd_uid="#uid#"
+<div class="cmd cmd-widget #history#" data-type="info" data-subtype="numeric" data-cmd_id="#id#" data-cmd_uid="#uid#"
 	data-version="#version#" data-eqLogic_id="#eqLogic_id#">
 	<div class="title #hide_name#">
 		<div class="cmdName">#name_display#</div>
@@ -37,7 +37,7 @@
 		var min = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max - min) / 4;
-		if (1) {
+		if (is_numeric('#state#')) {
 			var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
 				chart: {
 					style: {
@@ -126,6 +126,8 @@
 					},
 				}]
 			})
+		} else {
+			cmd.querySelector('#solidGauge#uid#').innerHTML = '<span class="label label-danger">' + _options.value + '</span>'
 		}
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
@@ -158,11 +160,7 @@
 					}
 				}
 
-				var value = _options.display_value.split(',');
-				console.log(value[0]);
-				console.log(value[1]);
-
-				solidGauge#uid#.series[0].points[0].update(value[1]);
+				solidGauge#uid#.series[0].points[0].update(_options.display_value);
 			}
 		})
 		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
