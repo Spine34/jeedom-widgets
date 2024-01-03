@@ -15,8 +15,8 @@
 	<template>
 		<div>backgroundColor : var(--el-defaultColor) ({{Couleur de fond}})</div>
 		<div>color1 : rgb(0, 255, 0) ({{1ère couleur de remplissage}})</div>
-		<div>color2 : rgb(255, 255, 0) ({{2ème couleur de remplissage}})</div>
-		<div>color3 : rgb(255, 0, 0) ({{3ème couleur de remplissage}})</div>
+		<div>color2 : rgb(0, 255, 255) ({{2ème couleur de remplissage}})</div>
+		<div>color3 : rgb(0, 0, 255) ({{3ème couleur de remplissage}})</div>
 		<div>startAngle : 180 ({{Angle de départ}})</div>
 		<div>endAngle : 540 ({{Angle de fin}})</div>
 		<div>min : 0 ({{Valeur minimum}})</div>
@@ -31,8 +31,8 @@
 	<script>
 		var backgroundColor = ('#backgroundColor#' != '#' + 'backgroundColor#') ? '#backgroundColor#' : 'var(--el-defaultColor)';
 		var color1 = ('#color1#' != '#' + 'color1#') ? '#color1#' : 'rgb(0, 255, 0)';
-		var color2 = ('#color2#' != '#' + 'color2#') ? '#color2#' : 'rgb(255, 255, 0)';
-		var color3 = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
+		var color2 = ('#color2#' != '#' + 'color2#') ? '#color2#' : 'rgb(0, 255, 255)';
+		var color3 = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(0, 0, 255)';
 		var startAngle = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : 180;
 		var endAngle = is_numeric('#endAngle#') ? parseFloat('#endAngle#') : 540;
 		var min = is_numeric('#min#') ? parseFloat('#min#') : 0;
@@ -123,8 +123,8 @@
 						y: -22,
 						// x: -22,
 						format:
-							'<span id="arnog23" style="color: var(--link-color); font-size: 24px; position: absolute; left: -23px;"></span>' +
-							'<span style="color: var(--link-color); font-size: 12px; position: absolute; left: 26px; top: 3px;">#unite#</span>'
+							'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
+							'<span style="color: var(--link-color); font-size: 12px; position: relative; top: -8px;">#unite#</span>'
 					},
 				}]
 			})
@@ -163,8 +163,13 @@
 		})
 		jeedom.cmd.addUpdateFunction('#id2#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
-				cmd.querySelector('#arnog23').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
-				cmd.querySelector('#arnog23').innerHTML = _options.display_value;
+				if (_options.display_value == 32) {
+					cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: rgb(255, 127, 0);');
+				} else if (_options.display_value == 192) {
+					cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: rgb(255, 0, 0);');
+				} else {
+					cmd.querySelector('.highcharts-color-0').removeAttribute('style');
+				}
 			}
 		})
 		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
