@@ -126,8 +126,6 @@
 					},
 				}]
 			})
-		} else {
-			cmd.querySelector('#solidGauge#uid#').innerHTML = '<span class="label label-danger">' + _options.value + '</span>'
 		}
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {

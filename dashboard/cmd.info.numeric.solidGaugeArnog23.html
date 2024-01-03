@@ -24,6 +24,7 @@
 		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
 		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
+		<div>id2 : ({{ID de la 2ème commande}})</div>
 	</template>
 	<!-- >= 4.4 -->
 	<!-- <script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script> -->
@@ -120,19 +121,16 @@
 					innerRadius: '70%',
 					dataLabels: {
 						y: -22,
+						// x: -22,
 						format:
-							'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
-							'<span style="color: var(--link-color); font-size: 12px; position: relative; top: -8px;">#unite#</span>'
+							'<span id="arnog23" style="color: var(--link-color); font-size: 24px; position: absolute; left: -23px;"></span>' +
+							'<span style="color: var(--link-color); font-size: 12px; position: absolute; left: 26px; top: 3px;">#unite#</span>'
 					},
 				}]
 			})
-		} else {
-			cmd.querySelector('#solidGauge#uid#').innerHTML = '<span class="label label-danger">' + _options.value + '</span>'
 		}
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
-				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
-
 				if (jeeFrontEnd.jeedomVersion.substr(2, 1) >= 4) {
 					if ('#time#' == 'duration' || '#time#' == 'date') {
 						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
@@ -159,8 +157,13 @@
 						cmd.find('.timeCmd').remove();
 					}
 				}
-
 				solidGauge#uid#.series[0].points[0].update(_options.display_value);
+			}
+		})
+		jeedom.cmd.addUpdateFunction('#id2#', function (_options) {
+			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
+				cmd.querySelector('#arnog23').innerHTML = _options.display_value;
 			}
 		})
 		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
