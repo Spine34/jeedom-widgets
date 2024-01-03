@@ -121,9 +121,8 @@
 					innerRadius: '70%',
 					dataLabels: {
 						y: -22,
-						// x: -22,
 						format:
-							'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
+							'<span id="arnog23#uid#" style="color: var(--link-color); font-size: 24px;"></span>' +
 							'<span style="color: var(--link-color); font-size: 12px; position: relative; top: -8px;">#unite#</span>'
 					},
 				}]
@@ -159,6 +158,16 @@
 					}
 				}
 				solidGauge#uid#.series[0].points[0].update(_options.display_value);
+				if ('#format#' == 1) {
+					function secondsToMinutesAndSeconds(seconds) {
+						var minutes = Math.floor(seconds / 60);
+						var remainingSeconds = seconds % 60;
+						return minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+					}
+					cmd.querySelector('#arnog23#uid#').innerHTML = secondsToMinutesAndSeconds(_options.display_value);
+				} else {
+					cmd.querySelector('#arnog23#uid#').innerHTML = _options.display_value;
+				}
 			}
 		})
 		jeedom.cmd.addUpdateFunction('#id2#', function (_options) {
