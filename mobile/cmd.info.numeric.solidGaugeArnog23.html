@@ -132,16 +132,32 @@
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
 				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
-				if (jeeFrontEnd.jeedomVersion.substr(0, 3) >= 4.4) {
-					if ('#time#' == 'duration' || '#time#' == 'date') {
-						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
-					} else if ('#time#' == 'GaugeIMG') {
-						let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
-						let date = new Date(_options.valueDate.replace(' ', 'T'));
-						let t = _options.valueDate.split(/[- :]/);
-						let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
-						let time = "à " + t[3] + ":" + t[4];
-						cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
+				if (typeof jeeFrontEnd.jeedomVersion !== 'undefined') {
+					if (jeeFrontEnd.jeedomVersion.substr(0, 3) >= 4.4) {
+						if ('#time#' == 'duration' || '#time#' == 'date') {
+							jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
+						} else if ('#time#' == 'GaugeIMG') {
+							let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+							let date = new Date(_options.valueDate.replace(' ', 'T'));
+							let t = _options.valueDate.split(/[- :]/);
+							let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
+							let time = "à " + t[3] + ":" + t[4];
+							cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
+						}
+					} else {
+						let cmd = $('.cmd[data-cmd_id=#id#]');
+						if ('#time#' == 'duration' || '#time#' == 'date') {
+							jeedom.cmd.displayDuration(_options.valueDate, cmd.find('.timeCmd'), '#time#');
+						} else if ('#time#' == 'GaugeIMG') {
+							let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+							let date = new Date(_options.valueDate.replace(' ', 'T'));
+							let t = _options.valueDate.split(/[- :]/);
+							let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
+							let time = "à " + t[3] + ":" + t[4];
+							cmd.find('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
+						} else {
+							cmd.find('.timeCmd').remove();
+						}
 					}
 				} else {
 					let cmd = $('.cmd[data-cmd_id=#id#]');
