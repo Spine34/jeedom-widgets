@@ -47,7 +47,7 @@
 		var color3#uid# = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
 		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
-		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;;;;;;;;;;;;;;;
+		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
 		setTimeout(function () {
 			if (is_numeric('#state#')) {
 				var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
