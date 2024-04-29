@@ -4,7 +4,7 @@
 		Widget name : cmd.info.numeric.solidGauge
 		Author : Spine
 		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
-		Last Uptade : 16/04/2024
+		Last Uptade : 29/04/2024
 	-->
 	<!-- <script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script> -->
 	<div class="title #hide_name#">
@@ -32,11 +32,12 @@
 		<div>min : 0 ({{Valeur minimum}})</div>
 		<div>max : 100 ({{Valeur maximum}})</div>
 		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
-		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
+		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
+		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
-		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : 140;
+		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : 106;
 		var spacingTop#uid# = is_numeric('#spacingTop#') ? parseFloat('#spacingTop#') : 0;
 		var size#uid# = is_numeric('#size#') ? parseFloat('#size#') : 100;
 		var startAngle#uid# = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : 180;
@@ -48,100 +49,102 @@
 		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
-		if (is_numeric('#state#')) {
-			var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
-				chart: {
-					style: {
-						fontFamily: 'Roboto'
+		setTimeout(function () {
+			if (is_numeric('#state#')) {
+				var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
+					chart: {
+						style: {
+							fontFamily: 'Roboto'
+						},
+						type: 'solidgauge',
+						plotBackgroundColor: null,
+						plotBackgroundImage: null,
+						backgroundColor: null,
+						plotBorderWidth: 0,
+						plotShadow: false,
+						height: height#uid#,
+						spacingTop: spacingTop#uid#,
+						spacingLeft: 0,
+						spacingRight: 0,
+						spacingBottom: 0,
+						borderWidth: 0
 					},
-					type: 'solidgauge',
-					plotBackgroundColor: null,
-					plotBackgroundImage: null,
-					backgroundColor: null,
-					plotBorderWidth: 0,
-					plotShadow: false,
-					height: height#uid#,
-					spacingTop: spacingTop#uid#,
-					spacingLeft: 0,
-					spacingRight: 0,
-					spacingBottom: 0,
-					borderWidth: 0
-				},
-				title: null,
-				pane: {
-					center: ['50%', '50%'],
-					size: size#uid#,
-					startAngle: startAngle#uid#,
-					endAngle: endAngle#uid#,
-					background: {
-						innerRadius: '70%',
-						outerRadius: '100%',
-						shape: 'arc',
-						borderWidth: 0,
-						backgroundColor: backgroundColor#uid#
-					}
-				},
-				tooltip: {
-					enabled: false
-				},
-				yAxis: {
-					stops: [
-						[0.3, color1#uid#],
-						[0.6, color2#uid#],
-						[0.9, color3#uid#]
-					],
-					lineWidth: 0,
-					minorTickInterval: null,
-					tickInterval: tickInterval#uid#,
-					tickWidth: 4,
-					tickLength: 15,
-					tickPosition: 'inside',
+					title: null,
+					pane: {
+						center: ['50%', '50%'],
+						size: size#uid#,
+						startAngle: startAngle#uid#,
+						endAngle: endAngle#uid#,
+						background: {
+							innerRadius: '70%',
+							outerRadius: '100%',
+							shape: 'arc',
+							borderWidth: 0,
+							backgroundColor: backgroundColor#uid#
+						}
+					},
+					tooltip: {
+						enabled: false
+					},
+					yAxis: {
+						stops: [
+							[0.3, color1#uid#],
+							[0.6, color2#uid#],
+							[0.9, color3#uid#]
+						],
+						lineWidth: 0,
+						minorTickInterval: null,
+						tickInterval: tickInterval#uid#,
+						tickWidth: 4,
+						tickLength: 15,
+						tickPosition: 'inside',
+						labels: {
+							enabled: false
+						},
+						min: min#uid#,
+						max: max#uid#,
+						zIndex: 6,
+						title: {
+							text: ''
+						}
+					},
 					labels: {
 						enabled: false
 					},
-					min: min#uid#,
-					max: max#uid#,
-					zIndex: 6,
-					title: {
-						text: ''
-					}
-				},
-				labels: {
-					enabled: false
-				},
-				plotOptions: {
-					solidgauge: {
-						dataLabels: {
-							y: 9,
-							borderWidth: 0,
-							useHTML: true
+					plotOptions: {
+						solidgauge: {
+							dataLabels: {
+								y: 9,
+								borderWidth: 0,
+								useHTML: true
+							}
 						}
-					}
-				},
-				credits: {
-					enabled: false
-				},
-				exporting: {
-					enabled: false
-				},
-				series: [{
-					name: '',
-					data: [Math.round(parseFloat('#state#') * 10) / 10],
-					radius: '100%',
-					innerRadius: '70%',
-					dataLabels: {
-						y: -22,
-						format:
-							'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
-							'<span style="color: var(--link-color); font-size: 12px; position: relative; top: -8px;">#unite#</span>'
 					},
-				}]
-			});
-		}
-		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
-			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
-				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
-				if (jeeFrontEnd.jeedomVersion.substr(0, 3) >= 4.4) {
+					credits: {
+						enabled: false
+					},
+					exporting: {
+						enabled: false
+					},
+					series: [{
+						name: '',
+						data: [#state#],
+						radius: '100%',
+						innerRadius: '70%',
+						dataLabels: {
+							y: -22,
+							format:
+								'<div style="scale: #valueUnitScale#">' +
+								'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
+								'<span style="color: var(--link-color); font-size: 12px; position: relative; bottom: 8px;">#unite#</span>' +
+								'</div>'
+						},
+					}]
+				});
+			}
+			jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+				if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+					cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
 					if ('#time#' == 'duration' || '#time#' == 'date') {
 						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
 					} else if ('#time#' == 'GaugeIMG') {
@@ -152,25 +155,11 @@
 						let time = "à " + t[3] + ":" + t[4];
 						cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
 					}
-				} else {
-					let cmd = $('.cmd[data-cmd_id=#id#]');
-					if ('#time#' == 'duration' || '#time#' == 'date') {
-						jeedom.cmd.displayDuration(_options.valueDate, cmd.find('.timeCmd'), '#time#');
-					} else if ('#time#' == 'GaugeIMG') {
-						let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
-						let date = new Date(_options.valueDate.replace(' ', 'T'));
-						let t = _options.valueDate.split(/[- :]/);
-						let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
-						let time = "à " + t[3] + ":" + t[4];
-						cmd.find('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
-					} else {
-						cmd.find('.timeCmd').remove();
-					}
-				}
 				solidGauge#uid#.series[0].points[0].update(_options.display_value);
-			}
-		});
-		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
+				}
+			});
+			jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
+		}, 250)
 	</script>
 	<style>
 		#solidGauge#uid# {
@@ -189,15 +178,15 @@
 			stroke: #tickColor# !important;
 		}
 
-		#solidGauge#uid# .highcharts-container .highcharts-axis-line {
-			stroke: transparent;
-		}
-
 		#solidGauge#uid# .highcharts-background {
 			fill: transparent !important;
 		}
 
-		.timeCmd.GaugeIMG {
+		#solidGauge#uid# .highcharts-grid-line {
+			stroke: none !important;
+		}
+
+		#solidGauge#uid# .timeCmd.GaugeIMG {
 			font-size: 11px;
 			padding: 2px 4px 2px 4px;
 			margin-top: 4px;
