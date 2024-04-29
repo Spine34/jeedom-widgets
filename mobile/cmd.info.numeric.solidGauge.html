@@ -49,117 +49,117 @@
 		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
-		setTimeout(function () {
-			if (is_numeric('#state#')) {
-				var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
-					chart: {
-						style: {
-							fontFamily: 'Roboto'
-						},
-						type: 'solidgauge',
-						plotBackgroundColor: null,
-						plotBackgroundImage: null,
-						backgroundColor: null,
-						plotBorderWidth: 0,
-						plotShadow: false,
-						height: height#uid#,
-						spacingTop: spacingTop#uid#,
-						spacingLeft: 0,
-						spacingRight: 0,
-						spacingBottom: 0,
-						borderWidth: 0
+		// setTimeout(function () {
+		if (is_numeric('#state#')) {
+			var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
+				chart: {
+					style: {
+						fontFamily: 'Roboto'
 					},
-					title: null,
-					pane: {
-						center: ['50%', '50%'],
-						size: size#uid#,
-						startAngle: startAngle#uid#,
-						endAngle: endAngle#uid#,
-						background: {
-							innerRadius: '70%',
-							outerRadius: '100%',
-							shape: 'arc',
-							borderWidth: 0,
-							backgroundColor: backgroundColor#uid#
-						}
-					},
-					tooltip: {
-						enabled: false
-					},
-					yAxis: {
-						stops: [
-							[0.3, color1#uid#],
-							[0.6, color2#uid#],
-							[0.9, color3#uid#]
-						],
-						lineWidth: 0,
-						minorTickInterval: null,
-						tickInterval: tickInterval#uid#,
-						tickWidth: 4,
-						tickLength: 15,
-						tickPosition: 'inside',
-						labels: {
-							enabled: false
-						},
-						min: min#uid#,
-						max: max#uid#,
-						zIndex: 6,
-						title: {
-							text: ''
-						}
-					},
+					type: 'solidgauge',
+					plotBackgroundColor: null,
+					plotBackgroundImage: null,
+					backgroundColor: null,
+					plotBorderWidth: 0,
+					plotShadow: false,
+					height: height#uid#,
+					spacingTop: spacingTop#uid#,
+					spacingLeft: 0,
+					spacingRight: 0,
+					spacingBottom: 0,
+					borderWidth: 0
+				},
+				title: null,
+				pane: {
+					center: ['50%', '50%'],
+					size: size#uid#,
+					startAngle: startAngle#uid#,
+					endAngle: endAngle#uid#,
+					background: {
+						innerRadius: '70%',
+						outerRadius: '100%',
+						shape: 'arc',
+						borderWidth: 0,
+						backgroundColor: backgroundColor#uid#
+					}
+				},
+				tooltip: {
+					enabled: false
+				},
+				yAxis: {
+					stops: [
+						[0.3, color1#uid#],
+						[0.6, color2#uid#],
+						[0.9, color3#uid#]
+					],
+					lineWidth: 0,
+					minorTickInterval: null,
+					tickInterval: tickInterval#uid#,
+					tickWidth: 4,
+					tickLength: 15,
+					tickPosition: 'inside',
 					labels: {
 						enabled: false
 					},
-					plotOptions: {
-						solidgauge: {
-							dataLabels: {
-								y: 9,
-								borderWidth: 0,
-								useHTML: true
-							}
-						}
-					},
-					credits: {
-						enabled: false
-					},
-					exporting: {
-						enabled: false
-					},
-					series: [{
-						name: '',
-						data: [#state#],
-						radius: '100%',
-						innerRadius: '70%',
-						dataLabels: {
-							y: -22,
-							format:
-								'<div style="scale: #valueUnitScale#">' +
-								'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
-								'<span style="color: var(--link-color); font-size: 12px; position: relative; bottom: 8px;">#unite#</span>' +
-								'</div>'
-						},
-					}]
-				});
-			}
-			jeedom.cmd.addUpdateFunction('#id#', function (_options) {
-				if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
-					cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
-					if ('#time#' == 'duration' || '#time#' == 'date') {
-						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
-					} else if ('#time#' == 'GaugeIMG') {
-						let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
-						let date = new Date(_options.valueDate.replace(' ', 'T'));
-						let t = _options.valueDate.split(/[- :]/);
-						let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
-						let time = "à " + t[3] + ":" + t[4];
-						cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
+					min: min#uid#,
+					max: max#uid#,
+					zIndex: 6,
+					title: {
+						text: ''
 					}
-				solidGauge#uid#.series[0].points[0].update(_options.display_value);
-				}
+				},
+				labels: {
+					enabled: false
+				},
+				plotOptions: {
+					solidgauge: {
+						dataLabels: {
+							y: 9,
+							borderWidth: 0,
+							useHTML: true
+						}
+					}
+				},
+				credits: {
+					enabled: false
+				},
+				exporting: {
+					enabled: false
+				},
+				series: [{
+					name: '',
+					data: [#state#],
+					radius: '100%',
+					innerRadius: '70%',
+					dataLabels: {
+						y: -22,
+						format:
+							'<div style="scale: #valueUnitScale#">' +
+							'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
+							'<span style="color: var(--link-color); font-size: 12px; position: relative; bottom: 8px;">#unite#</span>' +
+							'</div>'
+					},
+				}]
 			});
-			jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
-		}, 250)
+		}
+		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+				cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
+				if ('#time#' == 'duration' || '#time#' == 'date') {
+					jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
+				} else if ('#time#' == 'GaugeIMG') {
+					let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+					let date = new Date(_options.valueDate.replace(' ', 'T'));
+					let t = _options.valueDate.split(/[- :]/);
+					let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
+					let time = "à " + t[3] + ":" + t[4];
+					cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
+				}
+				solidGauge#uid#.series[0].points[0].update(_options.display_value);
+			}
+		});
+		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
+		// }, 250)
 	</script>
 	<style>
 		#solidGauge#uid# {
