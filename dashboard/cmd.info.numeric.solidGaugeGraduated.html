@@ -4,7 +4,7 @@
 		Widget name : cmd.info.numeric.solidGaugeGraduated
 		Author : Spine
 		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
-		Last Uptade : 16/04/2024
+		Last Uptade : 29/04/2024
 	-->
 	<script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script>
 	<div class="title #hide_name#">
@@ -32,8 +32,9 @@
 		<div>min : 0 ({{Valeur minimum}})</div>
 		<div>max : 100 ({{Valeur maximum}})</div>
 		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
-		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
+		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
+		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
 		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : 140;
@@ -138,14 +139,16 @@
 					},
 					series: [{
 						name: '',
-						data: [Math.round(parseFloat('#state#') * 10) / 10],
+						data: [#state#],
 						radius: '95%',
 						innerRadius: '75%',
 						dataLabels: {
 							y: -22,
 							format:
+								'<div style="scale: #valueUnitScale#">' +
 								'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
-								'<span style="color: var(--link-color); font-size: 12px; position: relative; top: -8px;">#unite#</span>'
+								'<span style="color: var(--link-color); font-size: 12px; position: relative; bottom: 8px;">#unite#</span>' +
+								'</div>'
 						},
 					}]
 				});
@@ -153,31 +156,15 @@
 			jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 				if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
 					cmd.querySelector('.content-sm').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
-					if (jeeFrontEnd.jeedomVersion.substr(0, 3) >= 4.4) {
-						if ('#time#' == 'duration' || '#time#' == 'date') {
-							jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
-						} else if ('#time#' == 'GaugeIMG') {
-							let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
-							let date = new Date(_options.valueDate.replace(' ', 'T'));
-							let t = _options.valueDate.split(/[- :]/);
-							let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
-							let time = "à " + t[3] + ":" + t[4];
-							cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
-						}
-					} else {
-						let cmd = $('.cmd[data-cmd_id=#id#]');
-						if ('#time#' == 'duration' || '#time#' == 'date') {
-							jeedom.cmd.displayDuration(_options.valueDate, cmd.find('.timeCmd'), '#time#');
-						} else if ('#time#' == 'GaugeIMG') {
-							let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
-							let date = new Date(_options.valueDate.replace(' ', 'T'));
-							let t = _options.valueDate.split(/[- :]/);
-							let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
-							let time = "à " + t[3] + ":" + t[4];
-							cmd.find('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
-						} else {
-							cmd.find('.timeCmd').remove();
-						}
+					if ('#time#' == 'duration' || '#time#' == 'date') {
+						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
+					} else if ('#time#' == 'GaugeIMG') {
+						let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+						let date = new Date(_options.valueDate.replace(' ', 'T'));
+						let t = _options.valueDate.split(/[- :]/);
+						let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
+						let time = "à " + t[3] + ":" + t[4];
+						cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
 					}
 				solidGauge#uid#.series[0].points[0].update(_options.display_value);
 				}
@@ -202,7 +189,7 @@
 			stroke: none !important;
 		}
 
-		.timeCmd.GaugeIMG {
+		#solidGauge#uid# .timeCmd.GaugeIMG {
 			font-size: 11px;
 			padding: 2px 4px 2px 4px;
 			margin-top: 4px;
