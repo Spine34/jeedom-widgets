@@ -4,7 +4,7 @@
 		Widget name : cmd.info.numeric.solidGaugeGraduated
 		Author : Spine
 		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
-		Last Uptade : 29/04/2024
+		Last Uptade : 06/05/2024
 	-->
 	<script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script>
 	<div class="title #hide_name#">
@@ -20,9 +20,7 @@
 			class="tooltips">#maxHistoryValue#</span> <i class="#tendance#"></i>
 	</div>
 	<template>
-		<div>height : 140 ({{Hauteur du conteneur}})</div>
 		<div>size : 100 ({{Taille}})</div>
-		<div>spacingTop : 0 ({{Espacement supérieur}})</div>
 		<div>startAngle : 180 ({{Angle de départ}})</div>
 		<div>endAngle : 540 ({{Angle de fin}})</div>
 		<div>backgroundColor : var(--el-defaultColor) ({{Couleur de fond}})</div>
@@ -32,13 +30,13 @@
 		<div>min : 0 ({{Valeur minimum}})</div>
 		<div>max : 100 ({{Valeur maximum}})</div>
 		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
+		<div>valueUnitHeight : -22 ({{Hauteur de la valeur et l'unité}})</div>
 		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
+		<div>height : 140 ({{Hauteur du conteneur}})</div>
 		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
-		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : 140;
-		var spacingTop#uid# = is_numeric('#spacingTop#') ? parseFloat('#spacingTop#') : 0;
 		var size#uid# = is_numeric('#size#') ? parseFloat('#size#') : 100;
 		var startAngle#uid# = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : 180;
 		var endAngle#uid# = is_numeric('#endAngle#') ? parseFloat('#endAngle#') : 540;
@@ -49,6 +47,8 @@
 		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
+		var valueUnitHeight#uid# = is_numeric('#valueUnitHeight#') ? parseFloat('#valueUnitHeight#') : -22;
+
 		setTimeout(function () {
 			if (is_numeric('#state#')) {
 				var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
@@ -62,8 +62,8 @@
 						backgroundColor: null,
 						plotBorderWidth: 0,
 						plotShadow: false,
-						height: height#uid#,
-						spacingTop: spacingTop#uid#,
+						height: 140,
+						spacingTop: 0,
 						spacingLeft: 0,
 						spacingRight: 0,
 						spacingBottom: 0,
@@ -143,7 +143,7 @@
 						radius: '95%',
 						innerRadius: '75%',
 						dataLabels: {
-							y: -22,
+							y: valueUnitHeight#uid#,
 							format:
 								'<div style="scale: #valueUnitScale#">' +
 								'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
@@ -175,6 +175,7 @@
 	<style>
 		#solidGauge#uid# {
 			width: 130px;
+			height: #height#px;
 		}
 
 		#solidGauge#uid# .highcharts-tick {
