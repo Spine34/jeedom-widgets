@@ -20,9 +20,7 @@
 			class="tooltips">#maxHistoryValue#</span> <i class="#tendance#"></i>
 	</div>
 	<template>
-		<div>height : 106 ({{Hauteur du conteneur}})</div>
 		<div>size : 100 ({{Taille}})</div>
-		<div>spacingTop : 0 ({{Espacement supérieur}})</div>
 		<div>startAngle : 180 ({{Angle de départ}})</div>
 		<div>endAngle : 540 ({{Angle de fin}})</div>
 		<div>backgroundColor : var(--el-defaultColor) ({{Couleur de fond}})</div>
@@ -32,13 +30,13 @@
 		<div>min : 0 ({{Valeur minimum}})</div>
 		<div>max : 100 ({{Valeur maximum}})</div>
 		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
+		<div>valueUnitHeight : -22 ({{Hauteur de la valeur et l'unité}})</div>
 		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
+		<div>height : 106px ({{Hauteur du conteneur}})</div>
 		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
-		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : 106;
-		var spacingTop#uid# = is_numeric('#spacingTop#') ? parseFloat('#spacingTop#') : 0;
 		var size#uid# = is_numeric('#size#') ? parseFloat('#size#') : 100;
 		var startAngle#uid# = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : 180;
 		var endAngle#uid# = is_numeric('#endAngle#') ? parseFloat('#endAngle#') : 540;
@@ -49,6 +47,8 @@
 		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
+		var valueUnitHeight#uid# = is_numeric('#valueUnitHeight#') ? parseFloat('#valueUnitHeight#') : -22;
+
 		setTimeout(function () {
 			if (is_numeric('#state#')) {
 				var solidGauge#uid# = Highcharts.chart('solidGauge#uid#', {
@@ -62,8 +62,8 @@
 						backgroundColor: null,
 						plotBorderWidth: 0,
 						plotShadow: false,
-						height: height#uid#,
-						spacingTop: spacingTop#uid#,
+						height: 106,
+						spacingTop: 0,
 						spacingLeft: 0,
 						spacingRight: 0,
 						spacingBottom: 0,
@@ -132,7 +132,7 @@
 						radius: '100%',
 						innerRadius: '70%',
 						dataLabels: {
-							y: -22,
+							y: valueUnitHeight#uid#,
 							format:
 								'<div style="scale: #valueUnitScale#">' +
 								'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
@@ -164,6 +164,7 @@
 	<style>
 		#solidGauge#uid# {
 			width: 105px;
+			height: #height#;
 		}
 
 		[data-theme="core2019_Dark"] #solidGauge#uid# .highcharts-tick {
