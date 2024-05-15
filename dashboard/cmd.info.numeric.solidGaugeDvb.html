@@ -41,6 +41,8 @@
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
 		<div>height : 106 ({{Hauteur du conteneur}})</div>
 		<div>tickColor : rgb(38, 38, 38) ({{Couleur des ticks}})</div>
+		<div>valueColorDynamic : 0 ({{1 pour que la couleur de la valeur et l'unité soit la même que la couleur de remplissage}})</div>
+		<div>valueColorStatic : var(--link-color) ({{Couleur de la valeur et l'unité}})</div>
 	</template>
 	<script>
 		var size#uid# = is_numeric('#size#') ? parseFloat('#size#') : 100;
@@ -60,6 +62,7 @@
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
 		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
 		var valueUnitHeight#uid# = is_numeric('#valueUnitHeight#') ? parseFloat('#valueUnitHeight#') : -22;
+		var valueColorStatic#uid# = ('#valueColorStatic#' != '#' + 'valueColorStatic#') ? '#valueColorStatic#' : 'var(--link-color)';
 
 		setTimeout(function () {
 			if (is_numeric('#state#')) {
@@ -168,26 +171,42 @@
 						cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
 					}
 					solidGauge#uid#.series[0].points[0].update(_options.display_value);
-					if (_options.display_value < threshold1#uid#) {
-						cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color1#uid# + ';');
-						cmd.querySelector('.value').style.color = color1#uid#;
-						cmd.querySelector('.unit').style.color = color1#uid#;
-					} else if (_options.display_value >= threshold1#uid# && _options.display_value < threshold2#uid#) {
-						cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color2#uid# + ';');
-						cmd.querySelector('.value').style.color = color2#uid#;
-						cmd.querySelector('.unit').style.color = color2#uid#;
-					} else if (_options.display_value >= threshold2#uid# && _options.display_value < threshold3#uid#) {
-						cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color3#uid# + ';');
-						cmd.querySelector('.value').style.color = color3#uid#;
-						cmd.querySelector('.unit').style.color = color3#uid#;
-					} else if (_options.display_value >= threshold3#uid# && _options.display_value < threshold4#uid#) {
-						cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color4#uid# + ';');
-						cmd.querySelector('.value').style.color = color4#uid#;
-						cmd.querySelector('.unit').style.color = color4#uid#;
-					} else if (_options.display_value >= threshold4#uid#) {
-						cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color5#uid# + ';');
-						cmd.querySelector('.value').style.color = color5#uid#;
-						cmd.querySelector('.unit').style.color = color5#uid#;
+					if ('#valueColorDynamic#' == 1) {
+						if (_options.display_value < threshold1#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color1#uid# + ';');
+							cmd.querySelector('.value').style.color = color1#uid#;
+							cmd.querySelector('.unit').style.color = color1#uid#;
+						} else if (_options.display_value >= threshold1#uid# && _options.display_value < threshold2#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color2#uid# + ';');
+							cmd.querySelector('.value').style.color = color2#uid#;
+							cmd.querySelector('.unit').style.color = color2#uid#;
+						} else if (_options.display_value >= threshold2#uid# && _options.display_value < threshold3#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color3#uid# + ';');
+							cmd.querySelector('.value').style.color = color3#uid#;
+							cmd.querySelector('.unit').style.color = color3#uid#;
+						} else if (_options.display_value >= threshold3#uid# && _options.display_value < threshold4#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color4#uid# + ';');
+							cmd.querySelector('.value').style.color = color4#uid#;
+							cmd.querySelector('.unit').style.color = color4#uid#;
+						} else if (_options.display_value >= threshold4#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color5#uid# + ';');
+							cmd.querySelector('.value').style.color = color5#uid#;
+							cmd.querySelector('.unit').style.color = color5#uid#;
+						}
+					} else {
+						if (_options.display_value < threshold1#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color1#uid# + ';');
+						} else if (_options.display_value >= threshold1#uid# && _options.display_value < threshold2#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color2#uid# + ';');
+						} else if (_options.display_value >= threshold2#uid# && _options.display_value < threshold3#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color3#uid# + ';');
+						} else if (_options.display_value >= threshold3#uid# && _options.display_value < threshold4#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color4#uid# + ';');
+						} else if (_options.display_value >= threshold4#uid#) {
+							cmd.querySelector('.highcharts-color-0').setAttribute('style', 'fill: ' + color5#uid# + ';');
+						}
+						cmd.querySelector('.value').style.color = valueColorStatic#uid#;
+						cmd.querySelector('.unit').style.color = valueColorStatic#uid#;
 					}
 				}
 			});
