@@ -1,0 +1,216 @@
+<div class="cmd cmd-widget #history#" data-type="info" data-subtype="numeric" data-cmd_id="#id#" data-cmd_uid="#uid#"
+	data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+	<!-- ################ Solid gauge ################ 
+		Widget name : cmd.info.numeric.solidGauge
+		Author : Spine
+		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
+		Last Uptade : 06/05/2024
+	-->
+	<script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script>
+	<div class="title #hide_name#">
+		<div class="cmdName">#name_display#</div>
+	</div>
+	<div class="content">
+		<div id="container-solidGauge#uid#"></div>
+	</div>
+	<div class="timeCmd label label-default #history#" data-type="info"></div>
+	<div class="cmdStats #hide_history#">
+		<span title="{{Minimum}}" class="tooltips">#minHistoryValue#</span>|<span title="{{Moyenne}}"
+			class="tooltips">#averageHistoryValue#</span>|<span title="{{Maximum}}"
+			class="tooltips">#maxHistoryValue#</span> <i class="#tendance#"></i>
+	</div>
+	<template>
+		<div>startAngle : 180 ({{Angle de départ}})</div>
+		<div>endAngle : 540 ({{Angle de fin}})</div>
+		<div>backgroundColor : var(--el-defaultColor) ({{Couleur de fond}})</div>
+		<div>color1 : rgb(0, 255, 0) ({{1ère couleur de remplissage}})</div>
+		<div>color2 : rgb(255, 255, 0) ({{2ème couleur de remplissage}})</div>
+		<div>color3 : rgb(255, 0, 0) ({{3ème couleur de remplissage}})</div>
+		<div>min : 0 ({{Valeur minimum}})</div>
+		<div>max : 100 ({{Valeur maximum}})</div>
+		<div>tickInterval : (max - min) / 4 ({{Pas des ticks}})</div>
+		<div>valueUnitHeight : -22 ({{Hauteur de la valeur et l'unité}})</div>
+		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
+		<div>threshold : null ({{Seuil de départ de la jauge}})</div>
+
+		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
+
+		<div>scale : 1 ({{Taille}})</div>
+		<div>width : 100 ({{Largeur du conteneur}})</div>
+		<div>height : 100 ({{Hauteur du conteneur}})</div>
+
+		<div>tickColor : rgba(var(--eq-bg-color), var(--opacity)) ({{Couleur des ticks}})</div>
+	</template>
+	<script>
+		var scale#uid# = is_numeric('#scale#') ? parseFloat('#scale#') : 1;
+		var startAngle#uid# = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : -180;
+		var endAngle#uid# = is_numeric('#endAngle#') ? parseFloat('#endAngle#') : 180;
+		var backgroundColor#uid# = ('#backgroundColor#' != '#' + 'backgroundColor#') ? '#backgroundColor#' : 'var(--el-defaultColor)';
+		var color1#uid# = ('#color1#' != '#' + 'color1#') ? '#color1#' : 'rgb(0, 255, 0)';
+		var color2#uid# = ('#color2#' != '#' + 'color2#') ? '#color2#' : 'rgb(255, 255, 0)';
+		var color3#uid# = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
+		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
+		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
+		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
+		var valueUnitHeight#uid# = is_numeric('#valueUnitHeight#') ? parseFloat('#valueUnitHeight#') : -22;
+		var threshold#uid# = is_numeric('#threshold#') ? parseFloat('#threshold#') : null;
+
+		var scale#uid# = is_numeric('#scale#') ? parseFloat('#scale#') : null;
+		var width#uid# = is_numeric('#width#') ? parseFloat('#width#') : null;
+		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : null;
+
+		setTimeout(function () {
+
+			if (is_numeric('#state#')) {
+				var chartSolidGauge#uid# = Highcharts.chart('container-solidGauge#uid#', {
+					chart: {
+						type: 'solidgauge',
+
+						width: 100,
+						height: 100,
+						spacingTop: 0,
+						spacingRight: 0,
+						spacingBottom: 0,
+						spacingLeft: 0
+					},
+
+					title: null,
+
+					pane: {
+						center: ['50%', '50%'],
+						size: '100%',
+						startAngle: startAngle#uid#,
+						endAngle: endAngle#uid#,
+						background: {
+							backgroundColor: backgroundColor#uid#,
+							innerRadius: '70%',
+							outerRadius: '100%',
+							shape: 'arc',
+
+							borderWidth: 0
+						}
+					},
+
+					exporting: {
+						enabled: false
+					},
+
+					tooltip: {
+						enabled: false
+					},
+
+					yAxis: {
+						stops: [
+							[0.1, color1#uid#],
+							[0.5, color2#uid#],
+							[0.9, color3#uid#]
+						],
+						lineWidth: 0,
+						tickWidth: 4,
+						minorTickInterval: null,
+						tickAmount: null,
+						title: {
+							enabled: false
+						},
+						labels: {
+							enabled: false
+						},
+						min: min#uid#,
+						max: max#uid#,
+
+						tickInterval: tickInterval#uid#,
+						tickLength: 15,
+						zIndex: 4
+					},
+
+					plotOptions: {
+						solidgauge: {
+							dataLabels: {
+								y: valueUnitHeight#uid#,
+								borderWidth: 0,
+								useHTML: true
+							}
+						}
+					},
+
+					credits: {
+						enabled: false
+					},
+
+					series: [{
+						name: null,
+						data: [#state#],
+						dataLabels: {
+							format:
+								'<div style="scale: #valueUnitScale#">' +
+								'<span style="color: var(--link-color); font-size: 24px;">{y}</span>' +
+								'<span style="color: var(--link-color); font-size: 12px; position: relative; bottom: 8px;">#unite#</span>' +
+								'</div>'
+						},
+						tooltip: null,
+
+						innerRadius: '70%',
+						radius: '100%',
+						threshold: threshold#uid#
+					}]
+				});
+			}
+
+			jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+				if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+					cmd.querySelector('.content').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
+					if ('#time#' == 'duration' || '#time#' == 'date') {
+						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
+					} else if ('#time#' == 'GaugeIMG') {
+						let week = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
+						let date = new Date(_options.valueDate.replace(' ', 'T'));
+						let t = _options.valueDate.split(/[- :]/);
+						let format = week[date.getDay()] + " " + t[2] + "/" + t[1];
+						let time = "à " + t[3] + ":" + t[4];
+						cmd.querySelector('.timeCmd').html(format + '<br>' + time).addClass('GaugeIMG');
+					}
+					chartSolidGauge#uid#.series[0].points[0].update(_options.display_value);
+
+					cmd.querySelector('#container-solidGauge#uid#').style.scale = scale#uid#;
+					cmd.querySelector('#container-solidGauge#uid#').style.width = width#uid#;
+					cmd.querySelector('#container-solidGauge#uid#').style.height = height#uid#;
+				}
+			});
+
+			jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
+
+		}, 250)
+	</script>
+	<style>
+		/* #container-solidGauge#uid# {
+			width: 100px;
+			height: 100px;
+		} */
+
+		#container-solidGauge#uid# .highcharts-tick {
+			stroke: rgba(var(--eq-bg-color), var(--opacity));
+		}
+
+		#container-solidGauge#uid# .highcharts-tick {
+			stroke: #tickColor# !important;
+		}
+
+		#container-solidGauge#uid# .highcharts-background {
+			fill: transparent !important;
+		}
+
+		#container-solidGauge#uid# .highcharts-grid-line {
+			stroke: none !important;
+		}
+
+		#container-solidGauge#uid# .timeCmd.GaugeIMG {
+			font-size: 11px;
+			padding: 2px 4px 2px 4px;
+			margin-top: 4px;
+			line-height: 1em !important;
+			display: inline-block !important;
+			box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 1), 0px 1px 2px 0px rgba(172, 172, 172, 0.5) inset;
+			margin-bottom: 5px;
+		}
+	</style>
+</div>
