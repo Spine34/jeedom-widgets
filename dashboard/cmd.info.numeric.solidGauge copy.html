@@ -4,7 +4,7 @@
 		Widget name : cmd.info.numeric.solidGauge
 		Author : Spine
 		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
-		Last Uptade : 06/05/2024
+		Last Uptade : 24/05/2024
 	-->
 	<script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script>
 	<div class="title #hide_name#">
@@ -32,13 +32,10 @@
 		<div>valueUnitHeight : -22 ({{Hauteur de la valeur et l'unité}})</div>
 		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
 		<div>threshold : null ({{Seuil de départ de la jauge}})</div>
-
 		<div>time : duration|date|GaugeIMG ({{Affiche durée ou date de la valeur}})</div>
-
 		<div>scale : 1 ({{Taille}})</div>
 		<div>width : 100 ({{Largeur du conteneur}})</div>
 		<div>height : 100 ({{Hauteur du conteneur}})</div>
-
 		<div>tickColor : rgba(var(--eq-bg-color), var(--opacity)) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
@@ -100,9 +97,18 @@
 
 					yAxis: {
 						stops: [
-							[0.1, color1#uid#],
-							[0.5, color2#uid#],
-							[0.9, color3#uid#]
+							[0.9, {
+								radialGradient: {
+									cx: 0,
+									cy: 1,
+									r: 1.5
+								},
+								stops: [
+									[0.1, color1#uid#],
+									[0.5, color2#uid#],
+									[0.9, color3#uid#]
+								]
+							}]
 						],
 						lineWidth: 0,
 						tickWidth: 4,
@@ -181,10 +187,11 @@
 		}, 250)
 	</script>
 	<style>
-		/* #container-solidGauge#uid# {
-			width: 100px;
-			height: 100px;
-		} */
+		#container-solidGauge#uid# {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
 		#container-solidGauge#uid# .highcharts-tick {
 			stroke: rgba(var(--eq-bg-color), var(--opacity));
