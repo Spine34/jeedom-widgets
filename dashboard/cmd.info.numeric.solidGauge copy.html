@@ -6,7 +6,7 @@
 		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
 		Last Uptade : 24/05/2024
 	-->
-	<script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script>
+	<!-- <script type="text/javascript" src="3rdparty/highstock/modules/solid-gauge.js"></script> -->
 	<div class="title #hide_name#">
 		<div class="cmdName">#name_display#</div>
 	</div>
@@ -37,6 +37,7 @@
 		<div>markerEnable : false ({{true pour activer le marqueur}})</div>
 		<div>markerValue : 62 ({{Valeur du marqueur}})</div>
 		<div>markerbackgroundColor : var(--link-color) ({{Couleur du marqueur}})</div>
+		<div>scaleEnable : false ({{true pour activer la graduation}})</div>
 
 		<div>scale : 1 ({{Echelle}})</div>
 		<div>width : 100 ({{Largeur du conteneur}})</div>
@@ -53,27 +54,28 @@
 		var color3#uid# = ('#color3#' != '#' + 'color3#') ? '#color3#' : 'rgb(255, 0, 0)';
 		var min#uid# = is_numeric('#min#') ? parseFloat('#min#') : 0;
 		var max#uid# = is_numeric('#max#') ? parseFloat('#max#') : 100;
-		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;
+		var tickInterval#uid# = is_numeric('#tickInterval#') ? parseFloat('#tickInterval#') : (max#uid# - min#uid#) / 4;;;;;;;;;;;;;
 		var valueUnitHeight#uid# = is_numeric('#valueUnitHeight#') ? parseFloat('#valueUnitHeight#') : -22;
 		var rounded#uid# = ('#rounded#' != '#' + 'rounded#') ? '#rounded#' : false;
 		var threshold#uid# = is_numeric('#threshold#') ? parseFloat('#threshold#') : null;
 		var markerEnable#uid# = ('#markerEnable#' != '#' + 'markerEnable#') ? '#markerEnable#' : false;
 		var markerValue#uid# = is_numeric('#markerValue#') ? parseFloat('#markerValue#') : 62;
 		var markerbackgroundColor#uid# = ('#markerbackgroundColor#' != '#' + 'markerbackgroundColor#') ? '#markerbackgroundColor#' : 'var(--link-color)';
+		var scaleEnable#uid# = ('#scaleEnable#' != '#' + 'scaleEnable#') ? '#scaleEnable#' : false;
 
 		var scale#uid# = is_numeric('#scale#') ? parseFloat('#scale#') : null;
 		var width#uid# = is_numeric('#width#') ? parseFloat('#width#') : null;
 		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : null;
 
-		setTimeout(function () {
+		includeJS('3rdparty/highstock/modules/solid-gauge.js', function () {
 
 			if (is_numeric('#state#')) {
 				var chartSolidGauge#uid# = Highcharts.chart('container-solidGauge#uid#', {
 					chart: {
 						type: 'solidgauge',
 
-						width: 100,
-						height: 100,
+						// width: 100,
+						// height: 100,
 						spacingTop: 0,
 						spacingRight: 0,
 						spacingBottom: 0,
@@ -84,7 +86,7 @@
 
 					pane: {
 						center: ['50%', '50%'],
-						size: '100%',
+						size: 100,
 						startAngle: startAngle#uid#,
 						endAngle: endAngle#uid#,
 						background: {
@@ -114,7 +116,7 @@
 						lineWidth: 0,
 						tickWidth: 4,
 						minorTickInterval: null,
-						tickAmount: null,
+						// tickAmount: null,
 						title: {
 							enabled: false
 						},
@@ -124,8 +126,8 @@
 						min: min#uid#,
 						max: max#uid#,
 
-						tickInterval: tickInterval#uid#,
 						tickLength: 15,
+						tickInterval: tickInterval#uid#,
 						zIndex: 4
 					},
 
@@ -161,8 +163,6 @@
 						radius: '100%',
 						threshold: threshold#uid#,
 						enableMouseTracking: false
-					}, {
-
 					}]
 				});
 			}
@@ -173,9 +173,9 @@
 					if ('#time#' == 'duration' || '#time#' == 'date') {
 						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
 					}
-					console.log(rounded#uid#);
-					// if (markerEnable#uid# != false) {
-					// 	chartSolidGauge#uid#.series[1].update({
+
+					// if (markerEnable#uid# == 'true') {
+					// 	chartSolidGauge#uid#.addSeries({
 					// 		data: [markerValue#uid#],
 					// 		type: 'gauge',
 					// 		dial: {
@@ -192,32 +192,54 @@
 					// 	});
 					// }
 
-					// chartSolidGauge#uid#.pane[0].update({
-					// 	background: {
-					// 		borderWidth: 2
-					// 	}
-					// });
-					// chartSolidGauge#uid#.yAxis[0].update({
+					// if (scaleEnable#uid# == 'true') {
+					// 	chartSolidGauge#uid#.pane[0].update({
+					// 		background: {
+					// 			borderWidth: 2
+					// 		}
+					// 	});
+					// 	chartSolidGauge#uid#.yAxis[0].update({
+					// 		tickWidth: 2,
 
-					// });
+					// 		tickLength: 10,
+					// 		minorTickWidth: 1,
+					// 		minorTickLength: 8,
+					// 		minorTickInterval: 'auto',
+					// 		labels: {
+					// 			distance: 8,
+					// 			enabled: true,
+					// 			style: {
+					// 				color: 'var(--link-color)',
+					// 				fontSize: '10px'
+					// 			}
+					// 		}
+					// 	});
+					// 	chartSolidGauge#uid#.series[0].update({
+					// 		innerRadius: '75%',
+					// 		radius: '95%'
+					// 	});
+					// }
 
 					chartSolidGauge#uid#.series[0].points[0].update(_options.display_value);
 
 					// cmd.querySelector('#container-solidGauge#uid#').style.scale = scale#uid#;
 					// cmd.querySelector('#container-solidGauge#uid#').style.width = width#uid#;
 					// cmd.querySelector('#container-solidGauge#uid#').style.height = height#uid#;
+
 				}
 			});
 
 			jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
 
-		}, 250)
+		});
 	</script>
 	<style>
 		#container-solidGauge#uid# {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			width: 140px;
+			height: 140px;
 		}
 
 		#container-solidGauge#uid# .highcharts-tick {
@@ -225,6 +247,10 @@
 		}
 
 		#container-solidGauge#uid# .highcharts-tick {
+			stroke: #tickColor# !important;
+		}
+
+		#container-solidGauge#uid# .highcharts-minor-tick {
 			stroke: #tickColor# !important;
 		}
 
