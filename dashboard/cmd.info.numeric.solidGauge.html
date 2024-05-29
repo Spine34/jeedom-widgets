@@ -32,14 +32,19 @@
 		<div>rounded : false ({{true pour activer l'arrondi}})</div>
 		<div>valueUnitScale : 1 ({{Echelle de la valeur et l'unité}})</div>
 		<div>threshold : null ({{Seuil}})</div>
-		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+
 		<div>markerEnable : false ({{true pour activer le marqueur}})</div>
 		<div>markerValue : 62 ({{Valeur du marqueur}})</div>
-		<div>markerbackgroundColor : var(--link-color) ({{Couleur du marqueur}})</div>
+		<div>markerbackgroundColor : var(--link-color) ({{Couleur de fond du marqueur}})</div>
+
 		<div>scaleEnable : false ({{true pour activer la graduation}})</div>
-		<div>height : 100 ({{Hauteur du conteneur}})</div>
+
+		<div>height : 100|130 ({{Hauteur}})</div>
 		<div>scale : 1 ({{Echelle}})</div>
-		<div>tickColor : rgba(var(--eq-bg-color), var(--opacity)) ({{Couleur des ticks}})</div>
+
+		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+
+		<div>tickColor : rgba(var(--eq-bg-color), var(--opacity))|var(--link-color) ({{Couleur des ticks}})</div>
 	</template>
 	<script>
 		var startAngle#uid# = is_numeric('#startAngle#') ? parseFloat('#startAngle#') : -180;
@@ -54,22 +59,24 @@
 		var valueUnitHeight#uid# = is_numeric('#valueUnitHeight#') ? parseFloat('#valueUnitHeight#') : -22;
 		var rounded#uid# = ('#rounded#' != '#' + 'rounded#') ? '#rounded#' : false;
 		var threshold#uid# = is_numeric('#threshold#') ? parseFloat('#threshold#') : null;
+
 		var markerEnable#uid# = ('#markerEnable#' != '#' + 'markerEnable#') ? '#markerEnable#' : false;
 		var markerValue#uid# = is_numeric('#markerValue#') ? parseFloat('#markerValue#') : 62;
 		var markerbackgroundColor#uid# = ('#markerbackgroundColor#' != '#' + 'markerbackgroundColor#') ? '#markerbackgroundColor#' : 'var(--link-color)';
+
 		var scaleEnable#uid# = ('#scaleEnable#' != '#' + 'scaleEnable#') ? '#scaleEnable#' : false;
+
 		var height#uid# = is_numeric('#height#') ? parseFloat('#height#') : null;
 		var scale#uid# = is_numeric('#scale#') ? parseFloat('#scale#') : 1;
 
 		includeJS('3rdparty/highstock/modules/solid-gauge.js', function () {
-
 			if (is_numeric('#state#')) {
 				var chartSolidGauge#uid# = Highcharts.chart('container-solidGauge#uid#', {
 					chart: {
 						type: 'solidgauge',
 
-						width: (scaleEnable#uid# == 'true') ? 135 : 100,
-						height: (scaleEnable#uid# == 'true') ? 135 : 100,
+						// width: (scaleEnable#uid# == 'true') ? 135 : 100,
+						// height: (scaleEnable#uid# == 'true') ? 135 : 100,
 						spacingTop: 0,
 						spacingRight: 0,
 						spacingBottom: 0,
@@ -159,6 +166,55 @@
 						enableMouseTracking: false
 					}]
 				});
+				
+				// if (markerEnable#uid# == 'true') {
+				// 	chartSolidGauge#uid#.addSeries({
+				// 		data: [markerValue#uid#],
+				// 		type: 'gauge',
+				// 		dial: {
+				// 			radius: '100%',
+				// 			backgroundColor: markerbackgroundColor#uid#,
+				// 			baseWidth: 4,
+				// 			baseLength: '100%',
+				// 			rearLength: '-70%'
+				// 		},
+				// 		pivot: {
+				// 			radius: 0
+				// 		},
+				// 		enableMouseTracking: false
+				// 	});
+				// }
+
+				// if (scaleEnable#uid# == 'true') {
+				// 	chartSolidGauge#uid#.pane[0].update({
+				// 		background: {
+				// 			borderWidth: 2
+				// 		}
+				// 	});
+				// 	chartSolidGauge#uid#.yAxis[0].update({
+				// 		tickWidth: 2,
+				// 		tickLength: 10,
+				// 		minorTickWidth: 1,
+				// 		minorTickLength: 8,
+				// 		minorTickInterval: 'auto',
+				// 		labels: {
+				// 			distance: 8,
+				// 			enabled: true,
+				// 			style: {
+				// 				color: 'var(--link-color)',
+				// 				fontSize: '10px'
+				// 			}
+				// 		}
+				// 	});
+				// 	chartSolidGauge#uid#.series[0].update({
+				// 		innerRadius: '71%',
+				// 		radius: '99%'
+				// 	});
+				// 	document.querySelector('#container-solidGauge#uid#').addClass('scaleEnable#uid#');
+				// }
+
+				document.querySelector('#container-solidGauge#uid#').style.height = height#uid# + 'px';
+				document.querySelector('#container-solidGauge#uid#').style.scale = scale#uid#;
 			}
 
 			jeedom.cmd.addUpdateFunction('#id#', function (_options) {
@@ -167,60 +223,10 @@
 					if ('#time#' == 'duration' || '#time#' == 'date') {
 						jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
 					}
-
-					if (markerEnable#uid# == 'true') {
-						chartSolidGauge#uid#.addSeries({
-							data: [markerValue#uid#],
-							type: 'gauge',
-							dial: {
-								radius: '100%',
-								backgroundColor: markerbackgroundColor#uid#,
-								baseWidth: 4,
-								baseLength: '100%',
-								rearLength: '-70%'
-							},
-							pivot: {
-								radius: 0
-							},
-							enableMouseTracking: false
-						});
-					}
-
-					if (scaleEnable#uid# == 'true') {
-						chartSolidGauge#uid#.pane[0].update({
-							background: {
-								borderWidth: 2
-							}
-						});
-						chartSolidGauge#uid#.yAxis[0].update({
-							tickWidth: 2,
-							tickLength: 10,
-							minorTickWidth: 1,
-							minorTickLength: 8,
-							minorTickInterval: 'auto',
-							labels: {
-								distance: 8,
-								enabled: true,
-								style: {
-									color: 'var(--link-color)',
-									fontSize: '10px'
-								}
-							},
-							tickColor: 'red'
-						});
-						chartSolidGauge#uid#.series[0].update({
-							innerRadius: '71%',
-							radius: '99%'
-						});
-						cmd.querySelector('#container-solidGauge#uid#').addClass('scaleEnable#uid#');
-					}
-
 					chartSolidGauge#uid#.series[0].points[0].update(_options.display_value);
-
-					cmd.querySelector('#container-solidGauge#uid#').style.height = height#uid# + 'px';
-					cmd.querySelector('#container-solidGauge#uid#').style.scale = scale#uid#;
 				}
 			});
+
 			jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
 		});
 	</script>
