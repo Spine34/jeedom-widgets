@@ -4,7 +4,7 @@
 		Widget name : cmd.info.numeric.solidGauge
 		Author : Spine
 		Inspiration : https://www.highcharts.com/demo/highcharts/gauge-solid
-		Last Update : 27/05/2024
+		Last Update : 29/05/2024
 	-->
 	<div class="title #hide_name#">
 		<div class="cmdName">#name_display#</div>
@@ -75,8 +75,8 @@
 					chart: {
 						type: 'solidgauge',
 
-						// width: (scaleEnable#uid# == 'true') ? 135 : 100,
-						// height: (scaleEnable#uid# == 'true') ? 135 : 100,
+						width: (scaleEnable#uid# == 'true') ? 135 : 100,
+						height: (scaleEnable#uid# == 'true') ? 135 : 100,
 						spacingTop: 0,
 						spacingRight: 0,
 						spacingBottom: 0,
@@ -166,52 +166,52 @@
 						enableMouseTracking: false
 					}]
 				});
-				
-				// if (markerEnable#uid# == 'true') {
-				// 	chartSolidGauge#uid#.addSeries({
-				// 		data: [markerValue#uid#],
-				// 		type: 'gauge',
-				// 		dial: {
-				// 			radius: '100%',
-				// 			backgroundColor: markerbackgroundColor#uid#,
-				// 			baseWidth: 4,
-				// 			baseLength: '100%',
-				// 			rearLength: '-70%'
-				// 		},
-				// 		pivot: {
-				// 			radius: 0
-				// 		},
-				// 		enableMouseTracking: false
-				// 	});
-				// }
 
-				// if (scaleEnable#uid# == 'true') {
-				// 	chartSolidGauge#uid#.pane[0].update({
-				// 		background: {
-				// 			borderWidth: 2
-				// 		}
-				// 	});
-				// 	chartSolidGauge#uid#.yAxis[0].update({
-				// 		tickWidth: 2,
-				// 		tickLength: 10,
-				// 		minorTickWidth: 1,
-				// 		minorTickLength: 8,
-				// 		minorTickInterval: 'auto',
-				// 		labels: {
-				// 			distance: 8,
-				// 			enabled: true,
-				// 			style: {
-				// 				color: 'var(--link-color)',
-				// 				fontSize: '10px'
-				// 			}
-				// 		}
-				// 	});
-				// 	chartSolidGauge#uid#.series[0].update({
-				// 		innerRadius: '71%',
-				// 		radius: '99%'
-				// 	});
-				// 	document.querySelector('#container-solidGauge#uid#').addClass('scaleEnable#uid#');
-				// }
+				if (markerEnable#uid# == 'true') {
+					chartSolidGauge#uid#.addSeries({
+						data: [markerValue#uid#],
+						type: 'gauge',
+						dial: {
+							radius: '100%',
+							backgroundColor: markerbackgroundColor#uid#,
+							baseWidth: 4,
+							baseLength: '100%',
+							rearLength: '-70%'
+						},
+						pivot: {
+							radius: 0
+						},
+						enableMouseTracking: false
+					});
+				}
+
+				if (scaleEnable#uid# == 'true') {
+					chartSolidGauge#uid#.pane[0].update({
+						background: {
+							borderWidth: 2
+						}
+					});
+					chartSolidGauge#uid#.yAxis[0].update({
+						tickWidth: 2,
+						tickLength: 10,
+						minorTickWidth: 1,
+						minorTickLength: 8,
+						minorTickInterval: 'auto',
+						labels: {
+							distance: 8,
+							enabled: true,
+							style: {
+								color: 'var(--link-color)',
+								fontSize: '10px'
+							}
+						}
+					});
+					chartSolidGauge#uid#.series[0].update({
+						innerRadius: '71%',
+						radius: '99%'
+					});
+					document.querySelector('#container-solidGauge#uid#').addClass('scaleEnable#uid#');
+				}
 
 				document.querySelector('#container-solidGauge#uid#').style.height = height#uid# + 'px';
 				document.querySelector('#container-solidGauge#uid#').style.scale = scale#uid#;
