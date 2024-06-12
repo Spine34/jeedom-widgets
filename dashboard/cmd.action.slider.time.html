@@ -1,0 +1,44 @@
+<div class="cmd cmd-widget" data-type="action" data-subtype="slider" data-template="button" data-cmd_id="#id#"
+	data-cmd_uid="#uid#" data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+	<div class="title #hide_name#">
+		<div class="cmdName">#name_display#</div>
+	</div>
+	<div class="content">
+		<input id="appt-time#uid#" type="time" name="appt-time" value="00:00" class="input-sm rounded" />
+	</div>
+	<div class="timeCmd label label-default #value_history#" data-type="info" data-cmd_id="#value_id#"></div>
+	<template>
+		<div>width : 70 ({{Largeur de la zone de saisie}})</div>
+		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+	</template>
+	<script>
+		document.getElementById('appt-time#uid#').addEventListener('input', function () {
+			let input = document.getElementById('appt-time#uid#');
+			let value = parseFloat(input.value.replace(':', ''));
+			jeedom.cmd.execute({ id: '#id#', value: { slider: value } });
+		});
+
+		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
+			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+				if ('#time#' === 'duration' || '#time#' === 'date') {
+					jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
+				}
+				var time = _options.value.toString();
+				var time = time.padStart(4, '0');
+				var time = time.substr(0, 2) + ':' + time.substr(2);
+				document.getElementById('appt-time#uid#').value = time;
+			}
+		});
+
+		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#state#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }]);
+
+		if (domUtils.issetWidgetOptParam('#width#', 'width') && parseFloat('#width#') >= 70) {
+			document.getElementById('appt-time#uid#').style.width = '#width#px';
+		}
+	</script>
+	<style>
+		input[type="time"]::-webkit-calendar-picker-indicator {
+			filter: invert(0.8);
+		}
+	</style>
+</div>
