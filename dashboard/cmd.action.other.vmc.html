@@ -1,7 +1,7 @@
-<div class="cmd cmd-widget #history#" data-type="info" data-subtype="binary" data-cmd_id="#id#" data-cmd_uid="#uid#"
-	data-version="#version#">
-	<!-- ################ Fan ################ 
-		Widget name : cmd.info.binary.fan
+<div class="cmd cmd-widget cursor" data-type="action" data-subtype="other" data-cmd_id="#id#" data-cmd_uid="#uid#"
+	data-version="#version#" data-eqLogic_id="#eqLogic_id#">
+	<!-- ################ VMC ################ 
+		Widget name : cmd.action.other.vmc
 		Author : Spine
 		Inspiration : https://github.com/ajja17/widget/blob/master/info/numeric/vmc/cmd.info.numeric.vmc_winhex.html
 		Last Update : 19/06/2024
@@ -9,7 +9,6 @@
 	<div class="title #hide_name#">
 		<div class="cmdName">#name_display#</div>
 	</div>
-
 	<div class="content">
 		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 			x="0px" y="0px" width="40px" height="40px" viewBox="0 0 100 100" enable-background="new 0 0 500 500"
@@ -28,7 +27,6 @@
 			</g>
 		</svg>
 	</div>
-
 	<div class="timeCmd label label-default #history#" data-type="info"></div>
 	<div class="cmdStats #hide_history#">
 		<span title="{{Minimum}}" class="tooltips">#minHistoryValue#</span>|<span title="{{Moyenne}}"
@@ -39,19 +37,34 @@
 		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
 	</template>
 	<script>
+		document.querySelector('.cmd[data-cmd_uid=#uid#] ').addEventListener('click', function () {
+			jeedom.cmd.execute({ id: '#id#' });
+		});
+
 		jeedom.cmd.addUpdateFunction('#id#', function (_options) {
 			if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
 				cmd.querySelector('.content').setAttribute('title', '{{Date de valeur}}: ' + _options.valueDate + '<br>{{Date de collecte}}: ' + _options.collectDate);
 				if ('#_time_widget_#' == '1' || '#time#' == 'duration' || '#time#' == 'date') {
 					jeedom.cmd.displayDuration(_options.valueDate, cmd.querySelector('.timeCmd'), '#time#');
 				}
-
 				if (_options.display_value == 1) {
-					cmd.querySelector('.fan#uid#').style.setProperty("animation-duration", "1.5s");
-					cmd.querySelector('.col#uid#').style.fill = 'var(--al-danger-color)';
+					cmd.setAttribute('data-state', 1);
+					if (jeedom.cmd.normalizeName('#name#') == 'on') {
+						cmd.unseen();
+					} else {
+						cmd.seen();
+						cmd.querySelector('.fan#uid#').style.setProperty("animation-duration", "1.5s");
+						cmd.querySelector('.col#uid#').style.fill = 'var(--al-danger-color)';
+					}
 				} else {
-					cmd.querySelector('.fan#uid#').style.setProperty("animation-duration", "0s");
-					cmd.querySelector('.col#uid#').style.fill = 'var(--link-color)';
+					cmd.setAttribute('data-state', 0);
+					if (jeedom.cmd.normalizeName('#name#') == 'off') {
+						cmd.unseen();
+					} else {
+						cmd.seen();
+						cmd.querySelector('.fan#uid#').style.setProperty("animation-duration", "0s");
+						cmd.querySelector('.col#uid#').style.fill = 'var(--link-color)';
+					}
 				}
 			}
 		});
