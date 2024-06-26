@@ -4,14 +4,14 @@
 		Widget name : cmd.action.other.vmc
 		Author : Spine
 		Inspiration : https://github.com/ajja17/widget/blob/master/info/numeric/vmc/cmd.info.numeric.vmc_winhex.html
-		Last Update : 19/06/2024
+		Last Update : 26/06/2024
 	-->
 	<div class="title #hide_name#">
 		<div class="cmdName">#valueName#</div>
 	</div>
 	<div class="content">
 		<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-			x="0px" y="0px" width="40px" height="40px" viewBox="0 0 100 100" enable-background="new 0 0 500 500"
+			x="0px" y="0px" width="30px" height="30px" viewBox="0 0 100 100" enable-background="new 0 0 500 500"
 			xml:space="preserve" class="fan#uid#" style="animation-duration: 0s;">
 			<g>
 				<path class="col#uid#" d="M62.841,46.809c4.031-1.447,10.757-2.366,17.216,1.222c10.979,6.097,21.299-3.18,19.797-13.452
@@ -35,8 +35,12 @@
 	</div>
 	<template>
 		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
+		<div>colorOn ({{Couleur}})</div>
+		<div>idSpeed ({{id de la commande vitesse}})</div>
 	</template>
 	<script>
+		var colorOn = domUtils.issetWidgetOptParam('#colorOn#', 'colorOn') ? '#colorOn#' : 'var(--al-danger-color)';
+
 		document.querySelector('.cmd[data-cmd_uid=#uid#] ').addEventListener('click', function () {
 			jeedom.cmd.execute({ id: '#id#' });
 		});
@@ -54,7 +58,7 @@
 					} else {
 						cmd.seen();
 						cmd.querySelector('.fan#uid#').style.setProperty('animation-duration', '1.5s');
-						cmd.querySelector('.col#uid#').style.fill = 'var(--al-danger-color)';
+						cmd.querySelector('.col#uid#').style.fill = colorOn;
 					}
 				} else {
 					cmd.setAttribute('data-state', 0);
@@ -68,6 +72,20 @@
 				}
 			}
 		});
+
+		if (domUtils.issetWidgetOptParam('#idSpeed#', 'idSpeed')) {
+			jeedom.cmd.addUpdateFunction('#idSpeed#', function (_options) {
+				if (is_object(cmd = document.querySelector('.cmd[data-cmd_uid="#uid#"]'))) {
+					if (_options.display_value == 1) {
+						cmd.querySelector('.fan#uid#').style.setProperty('animation-duration', '1.5s');
+					} else if (_options.display_value == 2) {
+						cmd.querySelector('.fan#uid#').style.setProperty('animation-duration', '0.8s');
+					} else if (_options.display_value == 3) {
+						cmd.querySelector('.fan#uid#').style.setProperty('animation-duration', '0.3s');
+					}
+				}
+			});
+		}
 
 		jeedom.cmd.refreshValue([{ cmd_id: '#id#', value: '#value#', display_value: '#state#', valueDate: '#valueDate#', collectDate: '#collectDate#', alertLevel: '#alertLevel#', unit: '#unite#' }])
 	</script>
