@@ -35,11 +35,11 @@
 	</div>
 	<template>
 		<div>time : duration|date ({{Affiche durée ou date de la valeur}})</div>
-		<div>colorOn ({{Couleur}})</div>
+		<div>colorOn : var(--al-danger-color) ({{Couleur}})</div>
 		<div>idSpeed ({{id de la commande vitesse}})</div>
 	</template>
 	<script>
-		var colorOn = domUtils.issetWidgetOptParam('#colorOn#', 'colorOn') ? '#colorOn#' : 'var(--al-danger-color)';
+		var colorOn#uid# = domUtils.issetWidgetOptParam('#colorOn#', 'colorOn') ? '#colorOn#' : 'var(--al-danger-color)';
 
 		document.querySelector('.cmd[data-cmd_uid=#uid#] ').addEventListener('click', function () {
 			jeedom.cmd.execute({ id: '#id#' });
@@ -58,7 +58,7 @@
 					} else {
 						cmd.seen();
 						cmd.querySelector('.fan#uid#').style.setProperty('animation-duration', '1.5s');
-						cmd.querySelector('.col#uid#').style.fill = colorOn;
+						cmd.querySelector('.col#uid#').style.fill = colorOn#uid#;
 					}
 				} else {
 					cmd.setAttribute('data-state', 0);
